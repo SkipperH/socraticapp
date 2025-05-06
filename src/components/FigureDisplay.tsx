@@ -6,9 +6,9 @@ const FigureDisplay: React.FC = () => {
     <div className="relative">
       {/* 3D Figure Placeholder */}
       <div className="w-64 h-80 md:w-80 md:h-96 relative animate-float">
-        {/* If you have the image already uploaded */}
+        {/* Nieuwe bijgestuurde afbeelding */}
         <img 
-          src="/lovable-uploads/e9d34205-3f19-40b0-8520-66c704fc800c.png" 
+          src="/lovable-uploads/8282f703-9226-479b-b7bd-542956a7f133.png" 
           alt="Descartes 3D Figure" 
           className="w-full h-full object-contain"
         />
