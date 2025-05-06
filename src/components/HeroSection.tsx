@@ -6,10 +6,15 @@ import FigureDisplay from './FigureDisplay';
 const HeroSection: React.FC = () => {
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center pt-20 pb-12">
-      {/* Background with gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#2A2F3C] to-[#4A5568] opacity-90 z-0">
-        {/* Mountain silhouette overlay */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI1MDAiIHZpZXdCb3g9IjAgMCAxNDQwIDUwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAyMDBDMjUwIDEwMCA0MDAgMzAwIDYwMCAyMDBDODAwIDEwMCAxMDAwIDMwMCAxMjAwIDIwMEMxNDAwIDEwMCAxNDQwIDE1MCAxNDQwIDE1MEwxNDQwIDUwMEwwIDUwMEwwIDIwMFoiIGZpbGw9IiMxQTFGMkMiIGZpbGwtb3BhY2l0eT0iMC42Ii8+PC9zdmc+')] bg-no-repeat bg-bottom bg-cover opacity-70"></div>
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/lovable-uploads/35c93d12-c159-4d4a-a9e0-e2d93bbfc853.png" 
+          alt="Berglandschap met tempel"
+          className="w-full h-full object-cover"
+        />
+        {/* Overlay voor betere leesbaarheid van tekst */}
+        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
       </div>
       
       <div className="container mx-auto px-6 z-10">
