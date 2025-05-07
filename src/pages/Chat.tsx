@@ -34,46 +34,46 @@ const Chat: React.FC = () => {
 
       {/* Chat Interface */}
       <div className="container mx-auto px-6 py-12 flex flex-col lg:flex-row">
-        {/* Chat Window */}
+        {/* Chat Window - Now taller (85vh) with transparency */}
         <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
-          <div className="bg-[#1A1F2C] rounded-lg p-6 shadow-lg">
-            <div className="space-y-4 mb-6 min-h-[400px]">
+          <div className="bg-[#1A1F2C]/80 backdrop-blur-sm rounded-lg p-6 shadow-lg h-[85vh] flex flex-col">
+            <div className="flex-grow space-y-4 mb-6 overflow-y-auto">
               {messages.map((msg, index) => (
-                <div key={index} className="bg-[#121731] rounded-lg p-4">
+                <div key={index} className="bg-[#121731]/90 rounded-lg p-4">
                   {msg}
                 </div>
               ))}
             </div>
             
-            <div className="mt-4">
+            <div className="mt-auto">
               <form onSubmit={handleSubmit} className="flex items-center">
                 <input
                   type="text"
                   placeholder="Wat bedoel je met ik denk dus ik besta?"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-[#121731] text-white px-4 py-3 rounded-l-lg focus:outline-none"
+                  className="w-full bg-[#121731]/90 text-white px-4 py-3 rounded-l-lg focus:outline-none"
                 />
                 <button 
                   type="submit" 
-                  className="bg-[#121731] text-white px-4 py-3 rounded-r-lg"
+                  className="bg-[#121731]/90 text-white px-4 py-3 rounded-r-lg"
                 >
                   <span className="sr-only">Send</span>
                   <span>→</span>
                 </button>
               </form>
               <div className="flex justify-between mt-4">
-                <button className="text-white bg-[#121731] p-2 rounded-full">
+                <button className="text-white bg-[#121731]/90 p-2 rounded-full">
                   <span className="sr-only">Voice</span>
                   🎤
                 </button>
                 <p className="text-sm text-gray-400">Stel een vraag Descartes...</p>
                 <div className="flex space-x-2">
-                  <button className="text-white bg-[#121731] p-2 rounded-full">
+                  <button className="text-white bg-[#121731]/90 p-2 rounded-full">
                     <span className="sr-only">Voice</span>
                     🎤
                   </button>
-                  <button className="text-white bg-[#121731] p-2 rounded-full">
+                  <button className="text-white bg-[#121731]/90 p-2 rounded-full">
                     <span className="sr-only">Options</span>
                     ⋮
                   </button>
@@ -83,12 +83,12 @@ const Chat: React.FC = () => {
           </div>
         </div>
         
-        {/* Philosopher Image - Hero-sized */}
-        <div className="w-full lg:w-1/2 flex justify-center items-center">
+        {/* Philosopher Image - Larger with more padding */}
+        <div className="w-full lg:w-1/2 flex justify-center items-center pl-8">
           <img 
             src="/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png"
             alt="Descartes Character" 
-            className="max-h-[80vh] object-contain"
+            className="max-h-[90vh] object-contain"
           />
         </div>
       </div>
