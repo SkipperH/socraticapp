@@ -4,8 +4,8 @@ import React from 'react';
 const FigureDisplay: React.FC = () => {
   return (
     <div className="relative h-full flex items-center justify-center">
-      {/* Hero Figure - Now 80vh tall */}
-      <div className="h-[80vh] relative animate-float">
+      {/* Hero Figure - Now 96vh tall (20% larger than 80vh) */}
+      <div className="h-[96vh] relative animate-float">
         {/* Nieuwe bijgestuurde afbeelding */}
         <img 
           src="/lovable-uploads/8282f703-9226-479b-b7bd-542956a7f133.png" 
