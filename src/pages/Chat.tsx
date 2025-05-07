@@ -17,12 +17,15 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#121731] text-white">
+    <div 
+      className="min-h-screen bg-cover bg-center text-white"
+      style={{ backgroundImage: "url('/lovable-uploads/4aab2216-fe2f-4c5e-a186-9648595ae9b8.png')" }}
+    >
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-6 bg-[#121731]">
+      <nav className="flex justify-between items-center p-6" style={{ backgroundColor: '#1B1F3B' }}>
         <div className="flex space-x-10">
-          <Link to="/" className="text-white text-lg font-medium">ABOUT</Link>
-          <span className="text-white text-lg font-medium">DONATE</span>
+          <Link to="/" className="text-lg font-medium" style={{ color: '#F8F5EC' }}>ABOUT</Link>
+          <span className="text-lg font-medium" style={{ color: '#F8F5EC' }}>DONATE</span>
         </div>
         <Link to="/" className="bg-[#f1f0e8] px-6 py-3 rounded">
           <span className="font-serif text-socratic-darkest text-xl font-semibold tracking-wider">SOCRATIC</span>
@@ -80,12 +83,12 @@ const Chat: React.FC = () => {
           </div>
         </div>
         
-        {/* Philosopher Image */}
+        {/* Philosopher Image - Hero-sized */}
         <div className="w-full lg:w-1/2 flex justify-center items-center">
           <img 
-            src="/lovable-uploads/e158125c-5626-487b-8c0e-fa532d079969.png"
-            alt="Philosopher Character" 
-            className="max-h-[70vh] object-contain"
+            src="/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png"
+            alt="Descartes Character" 
+            className="max-h-[80vh] object-contain"
           />
         </div>
       </div>
