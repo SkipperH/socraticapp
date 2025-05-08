@@ -1,22 +1,12 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 
 const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#1A1F2C] text-white">
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-6">
-        <div className="flex space-x-10">
-          <Link to="/about" className="text-lg font-medium text-[#F8F5EC]">ABOUT</Link>
-          <span className="text-lg font-medium text-[#F8F5EC]">DONATE</span>
-          <span className="text-lg font-medium text-[#F8F5EC]">NEWS</span>
-        </div>
-        <Link to="/" className="bg-[#f1f0e8] px-6 py-3 rounded">
-          <span className="font-serif text-socratic-darkest text-xl font-semibold tracking-wider">SOCRATIC</span>
-        </Link>
-      </nav>
+      <NavBar />
 
       {/* Hero Section */}
       <div className="container mx-auto px-6 py-16">

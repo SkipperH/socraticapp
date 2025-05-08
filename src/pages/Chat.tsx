@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Send, MessageSquare } from 'lucide-react';
 import { getPhilosopherResponse } from '../utils/openaiService';
 import { toast } from '@/components/ui/sonner';
+import NavBar from '../components/NavBar';
 
 // Define our philosophers data
 interface Philosopher {
@@ -103,23 +103,15 @@ const Chat: React.FC = () => {
       className="min-h-screen bg-cover bg-center text-white"
       style={{ backgroundImage: "url('/lovable-uploads/4aab2216-fe2f-4c5e-a186-9648595ae9b8.png')" }}
     >
-      {/* Navigation */}
-      <nav className="flex justify-between items-center p-6" style={{ backgroundColor: '#1B1F3B' }}>
-        <div className="flex space-x-10">
-          <Link to="/" className="text-lg font-medium" style={{ color: '#F8F5EC' }}>ABOUT</Link>
-          <span className="text-lg font-medium" style={{ color: '#F8F5EC' }}>DONATE</span>
-        </div>
-        <Link to="/" className="bg-[#f1f0e8] px-6 py-3 rounded">
-          <span className="font-serif text-socratic-darkest text-xl font-semibold tracking-wider">SOCRATIC</span>
-        </Link>
-      </nav>
+      {/* Updated Navigation */}
+      <NavBar />
 
       {/* Chat Interface with Navigation Arrows */}
       <div className="container mx-auto px-6 py-12 flex items-center">
         {/* Left Arrow */}
         <div 
           onClick={() => navigateToPhilosopher('prev')}
-          className="cursor-pointer p-4 bg-[#121731]/70 rounded-full hover:bg-[#121731]/90 transition-all"
+          className="cursor-pointer p-4 bg-[#1B1F3B]/70 rounded-full hover:bg-[#1B1F3B]/90 transition-all"
         >
           <ChevronLeft size={32} />
         </div>
@@ -207,7 +199,7 @@ const Chat: React.FC = () => {
         {/* Right Arrow */}
         <div 
           onClick={() => navigateToPhilosopher('next')}
-          className="cursor-pointer p-4 bg-[#121731]/70 rounded-full hover:bg-[#121731]/90 transition-all"
+          className="cursor-pointer p-4 bg-[#1B1F3B]/70 rounded-full hover:bg-[#1B1F3B]/90 transition-all"
         >
           <ChevronRight size={32} />
         </div>
