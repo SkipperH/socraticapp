@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send, MessageSquare } from 'lucide-react';
+import { getPhilosopherResponse } from '../utils/openaiService';
+import { toast } from '@/components/ui/sonner';
 
 // Define our philosophers data
 interface Philosopher {
@@ -40,19 +42,47 @@ const Chat: React.FC = () => {
     1: ['Kennis is de herinnering van de ziel. Wat wil je verkennen?'],
     2: ['Hij die een waarom heeft om voor te leven kan bijna elk hoe verdragen. Wat is jouw waarom?']
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const currentPhilosopher = philosophers[currentPhilosopherIndex];
   const currentMessages = messagesMap[currentPhilosopherIndex] || [currentPhilosopher.initialMessage];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
+      // Add user message to conversation
       const updatedMessages = [...currentMessages, message];
       setMessagesMap({
         ...messagesMap,
         [currentPhilosopherIndex]: updatedMessages
       });
+      
+      // Clear the input
       setMessage('');
+      
+      try {
+        // Show loading state
+        setIsLoading(true);
+        
+        // Call OpenAI API to get philosopher's response
+        const philosopherResponse = await getPhilosopherResponse(
+          currentPhilosopher.name,
+          message,
+          currentMessages
+        );
+        
+        // Add philosopher's response to conversation
+        const conversationWithResponse = [...updatedMessages, philosopherResponse];
+        setMessagesMap({
+          ...messagesMap,
+          [currentPhilosopherIndex]: conversationWithResponse
+        });
+      } catch (error) {
+        console.error("Error in chat:", error);
+        toast.error("Er was een probleem bij het communiceren met de filosoof.");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -94,7 +124,7 @@ const Chat: React.FC = () => {
           <ChevronLeft size={32} />
         </div>
         
-        {/* Chat Window - Now taller (85vh) with transparency */}
+        {/* Chat Window */}
         <div className="flex-1 flex flex-col lg:flex-row items-center">
           <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
             <div className="bg-[#1A1F2C]/80 backdrop-blur-sm rounded-lg p-6 shadow-lg h-[85vh] flex flex-col">
@@ -104,10 +134,26 @@ const Chat: React.FC = () => {
               
               <div className="flex-grow space-y-4 mb-6 overflow-y-auto">
                 {currentMessages.map((msg, index) => (
-                  <div key={index} className="bg-[#121731]/90 rounded-lg p-4">
+                  <div 
+                    key={index} 
+                    className={`p-4 rounded-lg ${
+                      index % 2 === 0 
+                        ? "bg-[#121731]/90" 
+                        : "bg-[#232a43]/90 ml-auto"
+                    } ${
+                      index === currentMessages.length - 1 && isLoading && index % 2 === 0
+                        ? "animate-pulse"
+                        : ""
+                    }`}
+                  >
                     {msg}
                   </div>
                 ))}
+                {isLoading && currentMessages.length % 2 !== 0 && (
+                  <div className="bg-[#121731]/90 rounded-lg p-4 animate-pulse">
+                    De filosoof denkt na...
+                  </div>
+                )}
               </div>
               
               <div className="mt-auto">
@@ -118,28 +164,28 @@ const Chat: React.FC = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full bg-[#121731]/90 text-white px-4 py-3 rounded-l-lg focus:outline-none"
+                    disabled={isLoading}
                   />
                   <button 
                     type="submit" 
                     className="bg-[#121731]/90 text-white px-4 py-3 rounded-r-lg"
+                    disabled={isLoading}
                   >
-                    <span className="sr-only">Send</span>
-                    <span>→</span>
+                    <Send size={18} className="text-gray-300" />
                   </button>
                 </form>
                 <div className="flex justify-between mt-4">
-                  <button className="text-white bg-[#121731]/90 p-2 rounded-full">
-                    <span className="sr-only">Voice</span>
-                    🎤
+                  <button className="text-white bg-[#121731]/90 p-2 rounded-full" title="Voice input">
+                    <MessageSquare size={18} />
                   </button>
-                  <p className="text-sm text-gray-400">Stel een vraag {currentPhilosopher.name}...</p>
+                  <p className="text-sm text-gray-400">
+                    {isLoading ? "De filosoof denkt na..." : `Stel een vraag aan ${currentPhilosopher.name}...`}
+                  </p>
                   <div className="flex space-x-2">
-                    <button className="text-white bg-[#121731]/90 p-2 rounded-full">
-                      <span className="sr-only">Voice</span>
-                      🎤
+                    <button className="text-white bg-[#121731]/90 p-2 rounded-full" title="Voice output">
+                      <MessageSquare size={18} />
                     </button>
-                    <button className="text-white bg-[#121731]/90 p-2 rounded-full">
-                      <span className="sr-only">Options</span>
+                    <button className="text-white bg-[#121731]/90 p-2 rounded-full" title="Options">
                       ⋮
                     </button>
                   </div>
@@ -148,7 +194,7 @@ const Chat: React.FC = () => {
             </div>
           </div>
           
-          {/* Philosopher Image - Larger with more padding */}
+          {/* Philosopher Image */}
           <div className="w-full lg:w-1/2 flex justify-center items-center pl-8">
             <img 
               src={currentPhilosopher.image}
