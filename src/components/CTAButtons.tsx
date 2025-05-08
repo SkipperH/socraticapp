@@ -17,11 +17,13 @@ const CTAButtons: React.FC<CTAButtonsProps> = ({ className = '' }) => {
           VERDER GAAN
         </Button>
       </Link>
-      <Button 
-        className="bg-[#1A1F2C] text-white hover:bg-[#2A2F3C] px-8 py-6 text-lg font-medium rounded-full"
-      >
-        OVER ONS
-      </Button>
+      <Link to="/about">
+        <Button 
+          className="bg-[#1A1F2C] text-white hover:bg-[#2A2F3C] px-8 py-6 text-lg font-medium rounded-full"
+        >
+          OVER ONS
+        </Button>
+      </Link>
     </div>
   );
 };

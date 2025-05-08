@@ -46,7 +46,7 @@ export async function getPhilosopherResponse(
     
     // Build conversation history in the format OpenAI expects
     const messages = [
-      { role: "system", content: philosopher.systemPrompt },
+      { role: "system" as const, content: philosopher.systemPrompt },
       ...conversationHistory.map((message, index) => {
         return index % 2 === 0 
           ? { role: "assistant" as const, content: message }
