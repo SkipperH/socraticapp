@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Send, MessageSquare } from 'lucide-react';
-import { getPhilosopherResponse } from '../utils/openaiService';
+import { ChevronLeft, ChevronRight, Send, MessageSquare, Settings } from 'lucide-react';
+import { getPhilosopherResponse, isApiKeySet } from '../utils/openaiService';
 import { toast } from '@/components/ui/sonner';
 import NavBar from '../components/NavBar';
+import ApiKeyModal from '../components/ApiKeyModal';
 
 // Define our philosophers data
 interface Philosopher {
@@ -45,13 +46,31 @@ const Chat: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
   const currentPhilosopher = philosophers[currentPhilosopherIndex];
   const currentMessages = messagesMap[currentPhilosopherIndex] || [currentPhilosopher.initialMessage];
 
+  useEffect(() => {
+    // Check if API key is set
+    if (!isApiKeySet()) {
+      // Show API key modal if not set
+      setIsApiKeyModalOpen(true);
+    }
+    
+    // Set initial fade-in
+    setFadeIn(true);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
+      // Check if API key is set
+      if (!isApiKeySet()) {
+        setIsApiKeyModalOpen(true);
+        return;
+      }
+      
       // Add user message to conversation
       const updatedMessages = [...currentMessages, message];
       setMessagesMap({
@@ -115,6 +134,12 @@ const Chat: React.FC = () => {
       {/* Updated Navigation */}
       <NavBar />
 
+      {/* API Key Modal */}
+      <ApiKeyModal 
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+      />
+
       {/* Chat Interface with Navigation Arrows */}
       <div className="container mx-auto px-6 py-12 flex items-center">
         {/* Left Arrow */}
@@ -129,8 +154,16 @@ const Chat: React.FC = () => {
         <div className="flex-1 flex flex-col lg:flex-row items-center">
           <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
             <div className="bg-[#1A1F2C]/80 backdrop-blur-sm rounded-lg p-6 shadow-lg h-[85vh] flex flex-col">
-              <div className="text-center mb-4">
+              <div className="text-center mb-4 flex justify-between items-center">
+                <div></div> {/* Empty div for spacing */}
                 <h2 className="text-xl font-semibold">{currentPhilosopher.name}</h2>
+                <button
+                  onClick={() => setIsApiKeyModalOpen(true)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  title="API Instellingen"
+                >
+                  <Settings size={18} />
+                </button>
               </div>
               
               <div className="flex-grow space-y-4 mb-6 overflow-y-auto">

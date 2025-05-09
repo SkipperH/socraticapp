@@ -1,15 +1,17 @@
 
 import OpenAI from 'openai';
 
-// You should replace this with your actual API key
-// In a production environment, this should be stored securely
-// For demo purposes, we're using a placeholder
-const API_KEY = "YOUR_OPENAI_API_KEY";
+// Allow users to store their API key in localStorage
+const getApiKey = (): string | null => {
+  return localStorage.getItem('openai_api_key');
+};
 
-const openai = new OpenAI({
-  apiKey: API_KEY,
-  dangerouslyAllowBrowser: true // Note: In production, API calls should be made server-side
-});
+const createOpenAIClient = (apiKey: string) => {
+  return new OpenAI({
+    apiKey,
+    dangerouslyAllowBrowser: true // Note: In production, API calls should be made server-side
+  });
+};
 
 export interface PhilosopherPrompt {
   name: string;
@@ -38,11 +40,20 @@ export async function getPhilosopherResponse(
   conversationHistory: string[]
 ): Promise<string> {
   try {
+    const apiKey = getApiKey();
+    
+    // Check if API key is available
+    if (!apiKey) {
+      return "Voer alstublieft een OpenAI API-sleutel in om met de filosoof te praten.";
+    }
+    
     const philosopher = philosopherPrompts[philosopherName];
     
     if (!philosopher) {
       return "Er is een fout opgetreden bij het laden van deze filosoof.";
     }
+    
+    const openai = createOpenAIClient(apiKey);
     
     // Build conversation history in the format OpenAI expects
     const messages = [
@@ -65,6 +76,16 @@ export async function getPhilosopherResponse(
     return response.choices[0]?.message?.content || "Mijn excuses, ik kon geen antwoord formuleren.";
   } catch (error) {
     console.error("Error getting philosopher response:", error);
-    return "Er is een fout opgetreden bij het communiceren met deze filosoof.";
+    return `Er is een fout opgetreden bij het communiceren met deze filosoof. Details: ${error instanceof Error ? error.message : String(error)}`;
   }
+}
+
+// Function to check if API key is set
+export function isApiKeySet(): boolean {
+  return !!getApiKey();
+}
+
+// Function to set API key
+export function setApiKey(key: string): void {
+  localStorage.setItem('openai_api_key', key);
 }
