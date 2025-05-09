@@ -6,6 +6,16 @@ const getApiKey = (): string | null => {
   return localStorage.getItem('openai_api_key');
 };
 
+// Allow users to store their preferred model in localStorage
+const getPreferredModel = (): string => {
+  return localStorage.getItem('openai_model') || 'gpt-3.5-turbo';
+};
+
+// Save preferred model to localStorage
+export const setPreferredModel = (model: string): void => {
+  localStorage.setItem('openai_model', model);
+};
+
 const createOpenAIClient = (apiKey: string) => {
   return new OpenAI({
     apiKey,
@@ -34,6 +44,13 @@ const philosopherPrompts: Record<string, PhilosopherPrompt> = {
   }
 };
 
+// Available models that can be selected by the user
+export const availableModels = [
+  { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Faster and more economical' },
+  { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Balanced performance and cost' },
+  { id: 'gpt-4o', name: 'GPT-4o', description: 'Most powerful, higher cost' }
+];
+
 export async function getPhilosopherResponse(
   philosopherName: string, 
   userMessage: string, 
@@ -54,6 +71,7 @@ export async function getPhilosopherResponse(
     }
     
     const openai = createOpenAIClient(apiKey);
+    const model = getPreferredModel();
     
     // Build conversation history in the format OpenAI expects
     const messages = [
@@ -67,7 +85,7 @@ export async function getPhilosopherResponse(
     ];
     
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: model,
       messages: messages,
       temperature: 0.7,
       max_tokens: 500,

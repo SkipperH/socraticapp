@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Send, MessageSquare, Settings } from 'lucide-react';
-import { getPhilosopherResponse, isApiKeySet } from '../utils/openaiService';
+import { getPhilosopherResponse, isApiKeySet, availableModels } from '../utils/openaiService';
 import { toast } from '@/components/ui/sonner';
 import NavBar from '../components/NavBar';
 import ApiKeyModal from '../components/ApiKeyModal';
@@ -47,9 +47,16 @@ const Chat: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [currentModel, setCurrentModel] = useState(localStorage.getItem('openai_model') || 'gpt-3.5-turbo');
 
   const currentPhilosopher = philosophers[currentPhilosopherIndex];
   const currentMessages = messagesMap[currentPhilosopherIndex] || [currentPhilosopher.initialMessage];
+
+  // Get the current model display name
+  const getCurrentModelName = () => {
+    const model = availableModels.find(m => m.id === currentModel);
+    return model ? model.name : currentModel;
+  };
 
   useEffect(() => {
     // Check if API key is set
@@ -60,7 +67,21 @@ const Chat: React.FC = () => {
     
     // Set initial fade-in
     setFadeIn(true);
-  }, []);
+    
+    // Check for model changes
+    const handleStorageChange = () => {
+      const newModel = localStorage.getItem('openai_model') || 'gpt-3.5-turbo';
+      if (newModel !== currentModel) {
+        setCurrentModel(newModel);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [currentModel]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,7 +176,10 @@ const Chat: React.FC = () => {
           <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
             <div className="bg-[#1A1F2C]/80 backdrop-blur-sm rounded-lg p-6 shadow-lg h-[85vh] flex flex-col">
               <div className="text-center mb-4 flex justify-between items-center">
-                <div></div> {/* Empty div for spacing */}
+                <div className="text-xs bg-[#121731]/80 px-2 py-1 rounded-md">
+                  <span className="text-gray-400">Model: </span>
+                  <span className="text-gray-300">{getCurrentModelName()}</span>
+                </div>
                 <h2 className="text-xl font-semibold">{currentPhilosopher.name}</h2>
                 <button
                   onClick={() => setIsApiKeyModalOpen(true)}
