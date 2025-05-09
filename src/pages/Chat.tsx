@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Send, MessageSquare } from 'lucide-react';
 import { getPhilosopherResponse } from '../utils/openaiService';
@@ -17,19 +18,19 @@ const philosophers: Philosopher[] = [
   {
     id: 0,
     name: 'Descartes',
-    image: '/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png',
+    image: '/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png',  // Fixed Descartes image path
     initialMessage: 'Ik denk, dus ik besta. Maar wat denk jij? Laten we samen redeneren.'
   },
   {
     id: 1,
-    name: 'Plato',
-    image: '/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png',
-    initialMessage: 'Kennis is de herinnering van de ziel. Wat wil je verkennen?'
+    name: 'Marcus Aurelius',
+    image: '/lovable-uploads/ab1b800a-3ebf-41c9-95f9-ba92a147dd8a.png',  // Using the Marcus Aurelius image
+    initialMessage: 'Het geluk van je leven hangt af van de kwaliteit van je gedachten. Waar denk jij vandaag aan?'
   },
   {
     id: 2,
     name: 'Nietzsche',
-    image: '/lovable-uploads/47b16868-3cf1-4fd3-8c4a-5e949e296fca.png',
+    image: '/lovable-uploads/550e137d-8a62-4794-8ba0-a9cce2be8fba.png',  // Using the Nietzsche image
     initialMessage: 'Hij die een waarom heeft om voor te leven kan bijna elk hoe verdragen. Wat is jouw waarom?'
   }
 ];
@@ -39,10 +40,11 @@ const Chat: React.FC = () => {
   const [message, setMessage] = useState('');
   const [messagesMap, setMessagesMap] = useState<Record<number, string[]>>({
     0: ['Ik denk, dus ik besta. Maar wat denk jij? Laten we samen redeneren.'],
-    1: ['Kennis is de herinnering van de ziel. Wat wil je verkennen?'],
+    1: ['Het geluk van je leven hangt af van de kwaliteit van je gedachten. Waar denk jij vandaag aan?'],
     2: ['Hij die een waarom heeft om voor te leven kan bijna elk hoe verdragen. Wat is jouw waarom?']
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [fadeIn, setFadeIn] = useState(false);
 
   const currentPhilosopher = philosophers[currentPhilosopherIndex];
   const currentMessages = messagesMap[currentPhilosopherIndex] || [currentPhilosopher.initialMessage];
@@ -87,15 +89,22 @@ const Chat: React.FC = () => {
   };
 
   const navigateToPhilosopher = (direction: 'next' | 'prev') => {
-    if (direction === 'next') {
-      setCurrentPhilosopherIndex((prev) => 
-        prev === philosophers.length - 1 ? 0 : prev + 1
-      );
-    } else {
-      setCurrentPhilosopherIndex((prev) => 
-        prev === 0 ? philosophers.length - 1 : prev - 1
-      );
-    }
+    setFadeIn(false);
+    
+    setTimeout(() => {
+      if (direction === 'next') {
+        setCurrentPhilosopherIndex((prev) => 
+          prev === philosophers.length - 1 ? 0 : prev + 1
+        );
+      } else {
+        setCurrentPhilosopherIndex((prev) => 
+          prev === 0 ? philosophers.length - 1 : prev - 1
+        );
+      }
+      
+      // Trigger fade-in animation after changing philosopher
+      setTimeout(() => setFadeIn(true), 50);
+    }, 300); // Short delay before changing philosopher
   };
 
   return (
@@ -186,13 +195,15 @@ const Chat: React.FC = () => {
             </div>
           </div>
           
-          {/* Philosopher Image */}
+          {/* Philosopher Image with Fade-In Animation */}
           <div className="w-full lg:w-1/2 flex justify-center items-center pl-8">
-            <img 
-              src={currentPhilosopher.image}
-              alt={`${currentPhilosopher.name} Character`}
-              className="max-h-[90vh] object-contain"
-            />
+            <div className={`transition-opacity duration-300 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
+              <img 
+                src={currentPhilosopher.image}
+                alt={`${currentPhilosopher.name} Character`}
+                className="max-h-[90vh] object-contain"
+              />
+            </div>
           </div>
         </div>
         

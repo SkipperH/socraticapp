@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import NavBar from '../components/NavBar';
@@ -21,13 +22,15 @@ const About: React.FC = () => {
             </p>
           </div>
           
-          {/* Image */}
+          {/* Updated Image - Now in square format */}
           <div className="w-full lg:w-1/2 flex justify-center">
-            <img 
-              src="/lovable-uploads/5a2dbfef-6e48-4384-ba2c-0d78ea222594.png" 
-              alt="Filosofen Figuren" 
-              className="rounded-lg shadow-xl"
-            />
+            <div className="aspect-square w-full max-w-md overflow-hidden rounded-lg shadow-xl">
+              <img 
+                src="/lovable-uploads/048229f6-fc30-4449-9400-680570dddec3.png" 
+                alt="Filosofen Figuren" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </div>
