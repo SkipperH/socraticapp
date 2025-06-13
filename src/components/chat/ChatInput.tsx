@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { MessageSquare, Send, Loader2, Wand2 } from 'lucide-react';
-import { optimizePrompt } from '../utils/promptOptimizer';
+import { optimizePrompt } from '../../utils/promptOptimizer';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
