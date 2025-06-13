@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { MessageSquare, Send, Loader2 } from 'lucide-react';
+import { MessageSquare, Send, Loader2, Wand2 } from 'lucide-react';
+import { optimizePrompt } from '../utils/promptOptimizer';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -10,11 +11,27 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, philosopherName }) => {
   const [message, setMessage] = useState('');
+  const [useOptimization, setUseOptimization] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() && !isLoading) {
-      onSendMessage(message.trim());
+      let finalMessage = message.trim();
+      
+      if (useOptimization) {
+        const optimization = optimizePrompt(finalMessage);
+        finalMessage = optimization.optimized;
+        
+        // Show user if prompt was optimized
+        if (optimization.wasOptimized) {
+          console.log('Prompt geoptimaliseerd:', {
+            origineel: optimization.original,
+            geoptimaliseerd: optimization.optimized
+          });
+        }
+      }
+      
+      onSendMessage(finalMessage);
       setMessage('');
     }
   };
@@ -57,6 +74,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, philoso
           )}
         </p>
         <div className="flex space-x-2">
+          <button 
+            onClick={() => setUseOptimization(!useOptimization)}
+            className={`p-2 rounded-full transition-colors ${
+              useOptimization 
+                ? 'text-blue-400 bg-[#121731]/90' 
+                : 'text-gray-400 bg-[#121731]/50'
+            }`}
+            title={useOptimization ? 'Prompt optimalisatie aan' : 'Prompt optimalisatie uit'}
+          >
+            <Wand2 size={18} />
+          </button>
           <button className="text-white bg-[#121731]/90 p-2 rounded-full" title="Voice output">
             <MessageSquare size={18} />
           </button>
