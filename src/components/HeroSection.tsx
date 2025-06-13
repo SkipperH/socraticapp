@@ -21,9 +21,9 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center">
           {/* Left content - Text and Buttons */}
           <div className="w-full lg:w-1/3 animate-fade-in mb-12 lg:mb-0 pl-0 md:pl-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-4 uppercase">
-              <div className="tracking-wide">Grote denkers</div>
-              <div className="mt-2">Tijdloze gesprekken</div>
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black font-sans text-white leading-tight mb-6 uppercase tracking-tight">
+              <div className="mb-4">Grote denkers</div>
+              <div>Tijdloze gesprekken</div>
             </h1>
             
             <CTAButtons className="mt-8 md:mt-12" />
