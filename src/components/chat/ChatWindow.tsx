@@ -21,12 +21,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   onSendMessage, 
   onOpenSettings 
 }) => {
-  // Get the current model display name
+  // Get the current model display name for Gemini models
   const getCurrentModelName = () => {
     const modelMap: Record<string, string> = {
-      'gpt-3.5-turbo': 'GPT-3.5',
-      'gpt-4o-mini': 'GPT-4o Mini',
-      'gpt-4o': 'GPT-4o'
+      'gemini-2.0-flash-exp': 'Gemini 2.0 Flash',
+      'gemini-1.5-pro': 'Gemini 1.5 Pro',
+      'gemini-1.5-flash': 'Gemini 1.5 Flash'
     };
     
     return modelMap[currentModel] || currentModel;

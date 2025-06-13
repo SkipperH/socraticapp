@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { getPhilosopherResponse, isApiKeySet } from '../utils/openaiService';
+import { getPhilosopherResponse, isApiKeySet } from '../utils/geminiService';
 import { toast } from '@/components/ui/sonner';
 import NavBar from '../components/NavBar';
 import ApiKeyModal from '../components/ApiKeyModal';
@@ -20,7 +20,7 @@ const Chat: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
-  const [currentModel, setCurrentModel] = useState(localStorage.getItem('openai_model') || 'gpt-3.5-turbo');
+  const [currentModel, setCurrentModel] = useState(localStorage.getItem('gemini_model') || 'gemini-2.0-flash-exp');
 
   const currentPhilosopher = philosophers[currentPhilosopherIndex];
   const currentMessages = messagesMap[currentPhilosopherIndex] || [currentPhilosopher.initialMessage];
@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
     
     // Check for model changes
     const handleStorageChange = () => {
-      const newModel = localStorage.getItem('openai_model') || 'gpt-3.5-turbo';
+      const newModel = localStorage.getItem('gemini_model') || 'gemini-2.0-flash-exp';
       if (newModel !== currentModel) {
         setCurrentModel(newModel);
       }

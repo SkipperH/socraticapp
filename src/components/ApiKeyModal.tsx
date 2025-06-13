@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { setApiKey, availableModels, setPreferredModel } from '../utils/openaiService';
+import { setApiKey, availableModels, setPreferredModel } from '../utils/geminiService';
 
 interface ApiKeyModalProps {
   isOpen: boolean;
@@ -14,11 +14,11 @@ interface ApiKeyModalProps {
 
 const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => {
   const [apiKey, setApiKeyValue] = useState('');
-  const [selectedModel, setSelectedModel] = useState(localStorage.getItem('openai_model') || 'gpt-3.5-turbo');
+  const [selectedModel, setSelectedModel] = useState(localStorage.getItem('gemini_model') || 'gemini-2.0-flash-exp');
 
   // Load saved model preference when component mounts
   useEffect(() => {
-    const savedModel = localStorage.getItem('openai_model');
+    const savedModel = localStorage.getItem('gemini_model');
     if (savedModel) {
       setSelectedModel(savedModel);
     }
@@ -39,9 +39,9 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-[#1A1F2C] text-white">
         <DialogHeader>
-          <DialogTitle className="text-xl">OpenAI API-instellingen</DialogTitle>
+          <DialogTitle className="text-xl">Google AI API-instellingen</DialogTitle>
           <DialogDescription className="text-gray-300">
-            Om met de filosofen te praten heb je een OpenAI API-sleutel nodig. Deze wordt lokaal opgeslagen in je browser.
+            Om met de filosofen te praten heb je een Google AI API-sleutel nodig. Deze wordt lokaal opgeslagen in je browser.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -50,7 +50,7 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => {
             <Input
               id="api-key"
               type="password"
-              placeholder="sk-..."
+              placeholder="AIza..."
               value={apiKey}
               onChange={(e) => setApiKeyValue(e.target.value)}
               className="bg-[#121731] text-white border-gray-600"
@@ -72,7 +72,7 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => {
               </SelectContent>
             </Select>
             <p className="text-xs text-gray-400 mt-1">
-              GPT-3.5 Turbo is goedkoper maar minder krachtig dan GPT-4o.
+              Gemini 2.0 Flash is de nieuwste en snelste model van Google.
             </p>
           </div>
           
@@ -85,7 +85,7 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => {
             </Button>
           </div>
           <div className="text-sm text-gray-400 mt-2">
-            <p>Je kunt een API-sleutel krijgen via <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="underline">OpenAI's website</a>.</p>
+            <p>Je kunt een API-sleutel krijgen via <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline">Google AI Studio</a>.</p>
           </div>
         </form>
       </DialogContent>

@@ -1,26 +1,23 @@
 
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Allow users to store their API key in localStorage
 const getApiKey = (): string | null => {
-  return localStorage.getItem('openai_api_key');
+  return localStorage.getItem('gemini_api_key');
 };
 
 // Allow users to store their preferred model in localStorage
 const getPreferredModel = (): string => {
-  return localStorage.getItem('openai_model') || 'gpt-3.5-turbo';
+  return localStorage.getItem('gemini_model') || 'gemini-2.0-flash-exp';
 };
 
 // Save preferred model to localStorage
 export const setPreferredModel = (model: string): void => {
-  localStorage.setItem('openai_model', model);
+  localStorage.setItem('gemini_model', model);
 };
 
-const createOpenAIClient = (apiKey: string) => {
-  return new OpenAI({
-    apiKey,
-    dangerouslyAllowBrowser: true // Note: In production, API calls should be made server-side
-  });
+const createGeminiClient = (apiKey: string) => {
+  return new GoogleGenerativeAI(apiKey);
 };
 
 export interface PhilosopherPrompt {
@@ -46,9 +43,9 @@ const philosopherPrompts: Record<string, PhilosopherPrompt> = {
 
 // Available models that can be selected by the user
 export const availableModels = [
-  { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Faster and more economical' },
-  { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Balanced performance and cost' },
-  { id: 'gpt-4o', name: 'GPT-4o', description: 'Most powerful, higher cost' }
+  { id: 'gemini-2.0-flash-exp', name: 'Gemini 2.0 Flash', description: 'Fast and efficient model' },
+  { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', description: 'More powerful, higher quality' },
+  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', description: 'Balanced performance' }
 ];
 
 export async function getPhilosopherResponse(
@@ -61,7 +58,7 @@ export async function getPhilosopherResponse(
     
     // Check if API key is available
     if (!apiKey) {
-      return "Voer alstublieft een OpenAI API-sleutel in om met de filosoof te praten.";
+      return "Voer alstublieft een Google AI API-sleutel in om met de filosoof te praten.";
     }
     
     const philosopher = philosopherPrompts[philosopherName];
@@ -70,28 +67,29 @@ export async function getPhilosopherResponse(
       return "Er is een fout opgetreden bij het laden van deze filosoof.";
     }
     
-    const openai = createOpenAIClient(apiKey);
-    const model = getPreferredModel();
+    const genAI = createGeminiClient(apiKey);
+    const model = genAI.getGenerativeModel({ model: getPreferredModel() });
     
-    // Build conversation history in the format OpenAI expects
-    const messages = [
-      { role: "system" as const, content: philosopher.systemPrompt },
-      ...conversationHistory.map((message, index) => {
-        return index % 2 === 0 
-          ? { role: "assistant" as const, content: message }
-          : { role: "user" as const, content: message };
-      }),
-      { role: "user" as const, content: userMessage }
-    ];
+    // Build conversation history for Gemini
+    let conversationText = `${philosopher.systemPrompt}\n\nConversatie geschiedenis:\n`;
     
-    const response = await openai.chat.completions.create({
-      model: model,
-      messages: messages,
-      temperature: 0.7,
-      max_tokens: 500,
+    // Add conversation history
+    conversationHistory.forEach((message, index) => {
+      if (index % 2 === 0) {
+        conversationText += `Filosoof: ${message}\n`;
+      } else {
+        conversationText += `Gebruiker: ${message}\n`;
+      }
     });
     
-    return response.choices[0]?.message?.content || "Mijn excuses, ik kon geen antwoord formuleren.";
+    // Add current user message
+    conversationText += `Gebruiker: ${userMessage}\n\nFilosoof:`;
+    
+    const result = await model.generateContent(conversationText);
+    const response = await result.response;
+    const text = response.text();
+    
+    return text || "Mijn excuses, ik kon geen antwoord formuleren.";
   } catch (error) {
     console.error("Error getting philosopher response:", error);
     return `Er is een fout opgetreden bij het communiceren met deze filosoof. Details: ${error instanceof Error ? error.message : String(error)}`;
@@ -105,5 +103,5 @@ export function isApiKeySet(): boolean {
 
 // Function to set API key
 export function setApiKey(key: string): void {
-  localStorage.setItem('openai_api_key', key);
+  localStorage.setItem('gemini_api_key', key);
 }
