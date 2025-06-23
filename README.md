@@ -68,36 +68,36 @@ world-view-news/
 ```
 ## 🚀 Installation
 ### Requirements
-- Node.js (versie 18 of hoger)
+- Node.js (version 18 or higher)
 - npm, yarn, of bun package manager
 ### Steps
 **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/local-story-explorer.git
+git clone https://github.com/SkipperH/socraticapp.git
 cd local-story-explorer
 ```
 **Instal dependencies**
 ```bash
 npm install
-# of
+# or
 yarn install
-# of
+# or
 bun install
 ```
 
 **Start the development server**
 ```bash
 npm run dev
-# of
+# or
 yarn dev
-# of
+# or
 bun dev
 ```
 **Open the application**
 ```bash
-Ga naar http://localhost:5173 in je browser
-De applicatie laadt standaard met een overzicht van alle verhalen
+Go to http://localhost:5173 in your browser.
+The application will load by default with an overview of all stories.
 ```
 ## 📝 License
 This project is licensed under MIT License.
