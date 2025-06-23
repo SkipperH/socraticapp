@@ -28,43 +28,94 @@ Overall, I’m proud of what I’ve built in a limited timeframe. The project ha
 ## 🏗️ Projectstructure
 ```bash
 world-view-news/
-├── public/                         # Statische bestanden zoals afbeeldingen of favicon
+
+├── public/
+
+│   └── ...                       # Statische bestanden (afbeeldingen, favicon, etc.)
+
 ├── src/
-│   ├── components/                 # Herbruikbare UI-componenten
-│   │   ├── Header.tsx             # Zoekbalk, logo, navigatie
-│   │   ├── MapComponent.tsx       # Leaflet-kaart met locatie-zoekfunctie
-│   │   ├── NewsPanel.tsx          # Nieuwsitems in een lijst of slider
-│   │   └── ui/                    # (shadcn/ui) gestylede UI-elementen (zoals buttons, modals)
-│   ├── pages/                     # Pagina’s voor routing
-│   │   ├── Index.tsx              # Hoofdpagina met kaart en nieuws
-│   │   ├── Login.tsx              # Inlogpagina
-│   │   └── NotFound.tsx           # 404 fallback pagina
-│   ├── services/                  # API-interactie of datavergaring
-│   │   ├── LocationService.ts     # Geocoding of Leaflet API helper
-│   │   └── NewsService.ts         # Haalt nieuws op of simuleert data
-│   ├── hooks/                     # Custom React Hooks
-│   │   └── use-toast.ts           # Toasts voor gebruikersfeedback
-│   ├── lib/                       # Hulpmethodes en utils
-│   │   └── utils.ts               # Helperfuncties voor bv. dataverwerking
-│   ├── App.tsx                    # Hoofdcomponent met router
-│   ├── App.css                    # Stijlen specifiek voor App component
-│   ├── index.css                  # Globale CSS (Tailwind import)
-│   ├── main.tsx                   # Entry point (render App.tsx)
-│   └── vite-env.d.ts              # Types voor Vite omgevingsvariabelen
+
+│   ├── components/
+
+│   │   ├── Header.tsx           # Navigatiebalk (verplaatsen uit ui)
+
+│   │   ├── MapComponent.tsx     # Leaflet-kaart (hernoemen indien nodig)
+
+│   │   ├── NewsPanel.tsx        # Nieuwsweergave
+
+│   │   ├── chat/                # AI-gerelateerde UI componenten
+
+│   │   └── ui/                  # Knoppen, modals etc. (zoals CTAButtons, ApiKeyModal)
+
+│   ├── pages/
+
+│   │   ├── Index.tsx            # Hoofdpagina
+
+│   │   ├── News.tsx             # Nieuwsfilter pagina
+
+│   │   ├── Chat.tsx             # Chatpagina (optioneel als extra functie)
+
+│   │   ├── About.tsx            # Over ons
+
+│   │   ├── Login.tsx            # (Toevoegen indien nodig)
+
+│   │   └── NotFound.tsx         # Fallbackpagina
+
+│   ├── services/
+
+│   │   ├── LocationService.ts   # Geocoding/search op locatie
+
+│   │   ├── NewsService.ts       # Nieuwsdata ophalen of mocken
+
+│   │   └── GeminiService.ts     # Externe AI-koppeling (verplaatsen vanuit utils)
+
+│   ├── hooks/
+
+│   │   └── use-toast.ts         # Feedbackmeldingen
+
+│   ├── lib/
+
+│   │   └── utils.ts             # Algemene hulpfuncties (merge met promptOptimizer.ts)
+
+│   ├── App.tsx
+
+│   ├── App.css
+
+│   ├── index.css
+
+│   ├── main.tsx
+
+│   └── vite-env.d.ts
+
 ├── .gitignore
-├── bun.lockb                     # (optioneel) bundler lockfile
-├── components.json               # Shadcn component configuratie
-├── eslint.config.js              # ESLint instellingen
-├── index.html                    # Root HTML-bestand
+
+├── bun.lockb
+
+├── components.json
+
+├── eslint.config.js
+
+├── index.html
+
 ├── package-lock.json
+
 ├── package.json
-├── postcss.config.js             # PostCSS + Tailwind config
+
+├── postcss.config.js
+
 ├── README.md
+
 ├── tailwind.config.ts
-├── tsconfig.app.json
+
 ├── tsconfig.json
+
+├── tsconfig.app.json
+
 ├── tsconfig.node.json
-└── vite.config.ts                # Vite bundler configuratie
+
+└── vite.config.ts
+
+ 
 ```
 ## 🚀 Installation
 ### Requirements
